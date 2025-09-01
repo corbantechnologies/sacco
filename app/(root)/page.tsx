@@ -1,3 +1,5 @@
+"use client"
+
 import ChooseUs from "./components/Choose-us"
 import Faq from "./components/faq"
 import Features from "./components/Features"

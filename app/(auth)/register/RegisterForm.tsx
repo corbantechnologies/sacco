@@ -1,5 +1,4 @@
 'use client'
-import heroImage from '@/public/signup.jpg';
 import MultiStepForm from './MultiStepForm';
 import Image from 'next/image';
 
@@ -10,7 +9,7 @@ export default function RegisterForm() {
       <div className="hidden lg:flex md:w-1/2 relative">
         <div className="absolute inset-0 bg-primary/70"></div>
         <Image 
-          src={heroImage} 
+          src='/signup.jpg'
           alt="Professional financial planning team working together" 
           className="w-full h-full object-cover"
         />
