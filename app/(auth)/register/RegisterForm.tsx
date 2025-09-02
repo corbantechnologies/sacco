@@ -12,6 +12,8 @@ export default function RegisterForm() {
           src='/signup.jpg'
           alt="Professional financial planning team working together" 
           className="w-full h-full object-cover"
+          width={50}
+          height={50}
         />
         <div className="absolute inset-0 flex items-center justify-center p-12">
           <div className="text-center text-primary-foreground">
