@@ -1,18 +1,19 @@
 'use client'
-import heroImage from '@/public/signup.jpg';
 import MultiStepForm from './MultiStepForm';
 import Image from 'next/image';
 
 export default function RegisterForm() {
   return (
-    <div className="min-h-screen flex w-screen">
+    <div className="h-screen flex w-screen">
       {/* Image (hidden on mobile) */}
       <div className="hidden lg:flex md:w-1/2 relative">
         <div className="absolute inset-0 bg-primary/70"></div>
         <Image 
-          src={heroImage} 
+          src='/signup.jpg'
           alt="Professional financial planning team working together" 
           className="w-full h-full object-cover"
+          width={500}
+          height={500}
         />
         <div className="absolute inset-0 flex items-center justify-center p-12">
           <div className="text-center text-primary-foreground">
@@ -42,7 +43,7 @@ export default function RegisterForm() {
       </div>
 
       {/* Right side - Registration Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 bg-background">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 overflow-auto">
         <div className="w-full max-w-md lg:max-w-auto">
           {/* Mobile header */}
           <div className="lg:hidden text-center mb-8">

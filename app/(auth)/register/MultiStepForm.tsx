@@ -6,34 +6,45 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { CheckCircle, ArrowLeft, ArrowRight } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { useCreateUserAccountMutation } from '@/hooks/accounts/accounts';
+import { useRouter } from 'next/navigation';
 
 interface FormData {
   // Step 1: Personal Information
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  last_name: string;
   email: string;
   phone: string;
+  password:string;
   
-  // Step 2: SACCO Information
-  membershipType: string;
-  initialDeposit: string;
-  monthlyContribution: string;
-  referralCode: string;
+  // Step 2: More Information
+  dob: string;
+  gender: string;
+  id_type: string;
+  id_number: string;
+  tax_pin: string;
+  employment_type: string;
+  salutation: string;
 }
 
 export default function MultiStepForm() {
   const [currentStep, setCurrentStep] = useState(1);
+  const router = useRouter();
+  const { mutateAsync: createAccount, isPending:isLoadingCreate  }=useCreateUserAccountMutation()
   const [formData, setFormData] = useState<FormData>({
-    firstName: '',
-    lastName: '',
+    first_name: '',
+    last_name: '',
     email: '',
     phone: '',
-    membershipType: '',
-    initialDeposit: '',
-    monthlyContribution: '',
-    referralCode: ''
+    password: '',
+    dob: '',
+    gender: '',
+    id_type: '',
+    id_number: '',
+    tax_pin: '',
+    employment_type: '',
+    salutation: '',
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const updateFormData = (field: keyof FormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -42,9 +53,11 @@ export default function MultiStepForm() {
   const validateStep = (step: number): boolean => {
     switch (step) {
       case 1:
-        return !!(formData.firstName && formData.lastName && formData.email && formData.phone);
+        return !!(formData.first_name && formData.last_name && formData.email && formData.phone);
       case 2:
-        return !!(formData.membershipType && formData.initialDeposit && formData.monthlyContribution);
+        return !!(formData.employment_type && formData.dob && formData.gender && formData.id_type && formData.id_number && formData.tax_pin);
+      case 3:
+        return true; // No validation needed for review step
       default:
         return true;
     }
@@ -63,20 +76,24 @@ export default function MultiStepForm() {
   };
 
   const handleSubmit = async () => {
-    setIsSubmitting(true);
-    
-    // API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    toast.success('Registration complete! Welcome to the SACCO.');
-    
-    setIsSubmitting(false);
-  };
+    try {
+      const newPost = await createAccount(formData);
+      
+      if (!newPost) {
+          toast.error('Registration failed. Please try again.');
+      } else {
+          toast.success('Registration complete!');
+          router.replace('/account-verification?true=1');
+      }
+  } catch{
+      toast.error('An error occurred. Please try again later.');
+  }
+}
 
   const getStepTitle = () => {
     switch (currentStep) {
       case 1: return "Personal Information";
-      case 2: return "SACCO Membership Details";
+      case 2: return "More Information";
       case 3: return "Review & Submit";
       default: return "";
     }
@@ -95,7 +112,7 @@ export default function MultiStepForm() {
             Personal Info
           </span>
           <span className={`text-sm ${currentStep >= 2 ? 'text-primary font-medium' : 'text-muted-foreground'}`}>
-            Membership
+            More Info
           </span>
           <span className={`text-sm ${currentStep >= 3 ? 'text-primary font-medium' : 'text-muted-foreground'}`}>
             Review & Submit
@@ -119,8 +136,8 @@ export default function MultiStepForm() {
                   <Label htmlFor="firstName">First Name *</Label>
                   <Input
                     id="firstName"
-                    value={formData.firstName}
-                    onChange={(e) => updateFormData('firstName', e.target.value)}
+                    value={formData.first_name}
+                    onChange={(e) => updateFormData('first_name', e.target.value)}
                     placeholder="John"
                   />
                 </div>
@@ -128,8 +145,8 @@ export default function MultiStepForm() {
                   <Label htmlFor="lastName">Last Name *</Label>
                   <Input
                     id="lastName"
-                    value={formData.lastName}
-                    onChange={(e) => updateFormData('lastName', e.target.value)}
+                    value={formData.last_name}
+                    onChange={(e) => updateFormData('last_name', e.target.value)}
                     placeholder="Doe"
                   />
                 </div>
@@ -156,55 +173,104 @@ export default function MultiStepForm() {
                   placeholder="+1 (555) 123-4567"
                 />
               </div>
+              <div className="space-y-2">
+                <Label htmlFor="password">Password *</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  value={formData.password}
+                  onChange={(e) => updateFormData('password', e.target.value)}
+                />
+              </div>
             </>
           )}
 
           {currentStep === 2 && (
             <>
+            <div className="space-y-2">
+                <Label htmlFor="dob">Date of Birth *</Label>
+                <Input
+                  id="dob"
+                  type='date'
+                  value={formData.dob}
+                  onChange={(e) => updateFormData('dob', e.target.value)}
+                />
+              </div>
               <div className="space-y-2">
-                <Label htmlFor="membershipType">Membership Type *</Label>
+                <Label htmlFor="employment_type">Employment Type *</Label>
                 <select
                   id="membershipType"
-                  value={formData.membershipType}
-                  onChange={(e) => updateFormData('membershipType', e.target.value)}
+                  value={formData.employment_type}
+                  onChange={(e) => updateFormData('employment_type', e.target.value)}
                   className="w-full px-3 py-2 border border-input rounded-md bg-background"
                 >
-                  <option value="">Select membership type</option>
-                  <option value="basic">Basic Member ($50/month)</option>
-                  <option value="premium">Premium Member ($100/month)</option>
-                  <option value="corporate">Corporate Member ($500/month)</option>
+                  <option value="">Select employment type</option>
+                  <option value="employed">Employed</option>
+                  <option value="self-employed">Self-employed</option>
+                  <option value="unemployed">Unemployed</option>
+                </select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="gender">Gender *</Label>
+                <select
+                  id="gender"
+                  value={formData.gender}
+                  onChange={(e) => updateFormData('gender', e.target.value)}
+                  className="w-full px-3 py-2 border border-input rounded-md bg-background"
+                >
+                  <option value="">Select gender</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                </select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="salutation">Salutation *</Label>
+                <select
+                  id="salutation"
+                  value={formData.salutation}
+                  onChange={(e) => updateFormData('salutation', e.target.value)}
+                  className="w-full px-3 py-2 border border-input rounded-md bg-background"
+                >
+                  <option value="">Select salutation *</option>
+                  <option value="mr">Mr.</option>
+                  <option value="mrs">Mrs.</option>
+                  <option value="miss">Miss</option>
+                  <option value="dr">Dr.</option>
+                  <option value="prof">Prof.</option>
+                  <option value="hon">Hon.</option>
+                </select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="id_type">ID type *</Label>
+                <select
+                  id="id_type"
+                  value={formData.id_type}
+                  onChange={(e) => updateFormData('id_type', e.target.value)}
+                  className="w-full px-3 py-2 border border-input rounded-md bg-background"
+                >
+                  <option value="">Select ID type</option>
+                  <option value="national_id">National Id</option>
+                  <option value="passport">Passport</option>
+                  <option value="driving_license">Driving License</option>
                 </select>
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="initialDeposit">Initial Deposit *</Label>
+                <Label htmlFor="id_number">ID no. *</Label>
                 <Input
-                  id="initialDeposit"
-                  type="number"
-                  value={formData.initialDeposit}
-                  onChange={(e) => updateFormData('initialDeposit', e.target.value)}
-                  placeholder="1000"
+                  id="id_number"
+                  type="text"
+                  value={formData.id_number}
+                  onChange={(e) => updateFormData('id_number', e.target.value)}
                 />
               </div>
-              
               <div className="space-y-2">
-                <Label htmlFor="monthlyContribution">Monthly Contribution *</Label>
+                <Label htmlFor="tax_pin">Tax pin *</Label>
                 <Input
-                  id="monthlyContribution"
-                  type="number"
-                  value={formData.monthlyContribution}
-                  onChange={(e) => updateFormData('monthlyContribution', e.target.value)}
-                  placeholder="250"
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="referralCode">Referral Code (Optional)</Label>
-                <Input
-                  id="referralCode"
-                  value={formData.referralCode}
-                  onChange={(e) => updateFormData('referralCode', e.target.value)}
-                  placeholder="FRIEND2024"
+                  id="tax_pin"
+                  type="text"
+                  value={formData.tax_pin}
+                  onChange={(e) => updateFormData('tax_pin', e.target.value)}
                 />
               </div>
             </>
@@ -215,13 +281,15 @@ export default function MultiStepForm() {
               <div className="p-4 bg-muted rounded-lg">
                 <h4 className="font-medium mb-3">Review Your Information</h4>
                 <div className="space-y-2 text-sm">
-                  <div><strong>Name:</strong> {formData.firstName} {formData.lastName}</div>
+                  <div><strong>Name:</strong> {formData.first_name} {formData.last_name}</div>
                   <div><strong>Email:</strong> {formData.email}</div>
                   <div><strong>Phone:</strong> {formData.phone}</div>
-                  <div><strong>Membership:</strong> {formData.membershipType}</div>
-                  <div><strong>Initial Deposit:</strong> ${formData.initialDeposit}</div>
-                  <div><strong>Monthly Contribution:</strong> ${formData.monthlyContribution}</div>
-                  {formData.referralCode && <div><strong>Referral Code:</strong> {formData.referralCode}</div>}
+                  <div><strong>Date of Birth:</strong> {formData.dob}</div>
+                  <div><strong>Gender:</strong> {formData.gender}</div>
+                  <div><strong>Employment:</strong> {formData.employment_type}</div>
+                  <div><strong>ID type:</strong> {formData.id_type}</div>
+                  <div><strong>ID no.:</strong> {formData.id_number}</div>
+                  <div><strong>Tax pin:</strong> {formData.tax_pin}</div>
                 </div>
               </div>
               
@@ -248,7 +316,7 @@ export default function MultiStepForm() {
             {currentStep < 3 ? (
               <Button
                 onClick={nextStep}
-                className="flex items-center gap-2 bg-gradient-primary hover:bg-primary-hover"
+                className="flex items-center gap-2 bg-primary cursor-pointer"
               >
                 Next
                 <ArrowRight className="h-4 w-4" />
@@ -256,11 +324,11 @@ export default function MultiStepForm() {
             ) : (
               <Button
                 onClick={handleSubmit}
-                disabled={isSubmitting}
-                className="flex items-center gap-2 bg-gradient-primary hover:bg-primary-hover"
+                disabled={isLoadingCreate}
+                className="flex items-center gap-2 bg-primary"
               >
-                {isSubmitting ? 'Submitting...' : 'Complete Registration'}
-                <CheckCircle className="h-4 w-4" />
+                {isLoadingCreate ? 'Submitting...' : 'Complete Registration'}
+                <CheckCircle className="h-4 w-4 text-white" />
               </Button>
             )}
           </div>
