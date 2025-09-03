@@ -1,5 +1,3 @@
-"use client";
-
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import TanstackQueryProvider from "./providers/TanstackQueryProvider";

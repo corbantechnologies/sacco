@@ -4,7 +4,7 @@ import Image from 'next/image';
 
 export default function RegisterForm() {
   return (
-    <div className="min-h-screen flex w-screen">
+    <div className="h-screen flex w-screen">
       {/* Image (hidden on mobile) */}
       <div className="hidden lg:flex md:w-1/2 relative">
         <div className="absolute inset-0 bg-primary/70"></div>
@@ -43,7 +43,7 @@ export default function RegisterForm() {
       </div>
 
       {/* Right side - Registration Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 bg-background">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 overflow-auto">
         <div className="w-full max-w-md lg:max-w-auto">
           {/* Mobile header */}
           <div className="lg:hidden text-center mb-8">

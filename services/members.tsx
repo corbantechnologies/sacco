@@ -1,6 +1,6 @@
 "use client";
 
-import { apiActions, apiMultipartActions } from "@/tools/api";
+import { apiActions, apiMultipartActions } from "@/tools/axios";
 import { AxiosResponse } from "axios";
 
 // Define the shape of the user data
