@@ -21,7 +21,6 @@ function Dashboard() {
     return <div>Loading...</div>;
   }
 
-  console.log(members);
 
   return <div>Dashboard</div>;
 }

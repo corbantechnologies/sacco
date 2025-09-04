@@ -9,6 +9,11 @@ function SaccoMembers() {
     data: members,
     refetch: refetchMembers,
   } = useFetchAllMembers();
+
+  if (isLoadingMembers) {
+    return <div>Loading...</div>;
+  }
+  
   return <div>SaccoMembers</div>;
 }
 

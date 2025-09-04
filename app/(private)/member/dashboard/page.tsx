@@ -5,7 +5,6 @@ import { useFetchMember } from "@/hooks/members/actions";
 import React from "react";
 
 function Dashboard() {
-  // const userId = useUserId();
   const {
     isLoading: isLoadingMember,
     data: member,
@@ -16,7 +15,6 @@ function Dashboard() {
     return <div>Loading...</div>;
   }
 
-  console.log(member);
 
   return <div>Dashboard</div>;
 }
