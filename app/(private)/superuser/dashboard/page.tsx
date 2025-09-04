@@ -1,9 +1,29 @@
-import React from 'react'
+"use client";
+
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { useFetchAllMembers, useFetchMember } from "@/hooks/members/actions";
+import React from "react";
 
 function Dashboard() {
-  return (
-    <div>Dashboard</div>
-  )
+  const {
+    isLoading: isLoadingMember,
+    data: member,
+    refetch: refetchMember,
+  } = useFetchMember();
+
+  const {
+    isLoading: isLoadingMembers,
+    data: members,
+    refetch: refetchMembers,
+  } = useFetchAllMembers();
+
+  if (isLoadingMember || isLoadingMembers) {
+    return <div>Loading...</div>;
+  }
+
+  console.log(members);
+
+  return <div>Dashboard</div>;
 }
 
-export default Dashboard
+export default Dashboard;
