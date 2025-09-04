@@ -85,13 +85,13 @@ export const getMemberByMemberNumber = async (
   return response.data;
 };
 
-// Approve member by member number: sending this post request to the backend API approves the member automatically
+// Approve member by member number: sending this patch request to the backend API approves the member automatically
 
 export const approveMember = async (
   member_no: string,
   headers: { headers: { Authorization: string } }
 ) => {
-  await apiActions.post(`/api/v1/auth/member/${member_no}/approve/`, headers);
+  await apiActions.patch(`/api/v1/auth/member/${member_no}/approve/`, headers);
 };
 
 // TODO:
