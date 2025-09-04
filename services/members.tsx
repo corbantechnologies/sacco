@@ -58,3 +58,43 @@ export const updateMember = async (
   );
   return response.data;
 };
+
+// SACCO Admins services
+// View all members
+
+export const getAllMembers = async (headers: {
+  headers: { Authorization: string };
+}): Promise<User[]> => {
+  const response: AxiosResponse<User[]> = await apiActions.get(
+    `/api/v1/auth/`,
+    headers
+  );
+  return response.data;
+};
+
+// View member by member number
+
+export const getMemberByMemberNumber = async (
+  member_no: string,
+  headers: { headers: { Authorization: string } }
+): Promise<User> => {
+  const response: AxiosResponse<User> = await apiActions.get(
+    `/api/v1/auth/member/${member_no}/`,
+    headers
+  );
+  return response.data;
+};
+
+// Approve member by member number: sending this patch request to the backend API approves the member automatically
+
+export const approveMember = async (
+  member_no: string,
+  headers: { headers: { Authorization: string } }
+) => {
+  await apiActions.patch(`/api/v1/auth/member/${member_no}/approve/`, headers);
+};
+
+// TODO:
+// Decline member by member number
+// Send back email to member to notify them that their account has been declined
+// Send back application for corrections
