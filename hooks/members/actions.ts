@@ -1,9 +1,9 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import useAxiosAuth from "../authentication/useAxiosAuth";
 import useUserId from "../authentication/useUserId";
-import { getAllMembers, getMember, getMemberByMemberNumber } from "@/services/members";
+import { approveMember, getAllMembers, getMember, getMemberByMemberNumber } from "@/services/members";
 
 export function useFetchMember() {
   // Fetching the user details
@@ -37,4 +37,11 @@ export function useFetchMemberByMemberNumber(member_no: string) {
     queryFn: () => getMemberByMemberNumber(member_no, token),
     enabled: !!member_no,
   });
+}
+
+export const useVerifyMemberAccount = ()=>{
+  const headers = useAxiosAuth();
+  return useMutation({
+      mutationFn:(member_no: string)=> approveMember(member_no, headers),
+  })
 }

@@ -36,7 +36,7 @@ const data = {
       items: [
         {
           title: "All Members",
-          url: "#",
+          url: "/sacco-admin/dashboard/members",
         },
         {
           title: "Invite Members",
@@ -71,7 +71,7 @@ const data = {
   dashboard: [
     {
       name: "Dashboard",
-      url: "#",
+      url: "/sacco-admin/dashboard",
       icon: LayoutGrid,
     },
   ],
