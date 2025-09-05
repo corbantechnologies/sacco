@@ -20,6 +20,7 @@ interface User {
   employment_type: string;
   is_system_admin: boolean;
   is_member: boolean;
+  is_approved: boolean;
   is_staff: boolean;
 }
 
@@ -65,11 +66,11 @@ export const updateMember = async (
 export const getAllMembers = async (headers: {
   headers: { Authorization: string };
 }): Promise<User[]> => {
-  const response: AxiosResponse<User[]> = await apiActions.get(
+  const response = await apiActions.get(
     `/api/v1/auth/`,
     headers
   );
-  return response.data;
+  return response.data.results;
 };
 
 // View member by member number
@@ -91,7 +92,14 @@ export const approveMember = async (
   member_no: string,
   headers: { headers: { Authorization: string } }
 ) => {
-  await apiActions.patch(`/api/v1/auth/member/${member_no}/approve/`, headers);
+  const response = await apiActions.patch(
+    `/api/v1/auth/approve-member/${member_no}/`,
+    {}, // No body for approval
+    headers // Pass the headers as config
+  );
+
+  return response.data;
+  // await apiActions.patch(`/api/v1/auth/approve-member/${member_no}/`, headers);
 };
 
 // TODO:
