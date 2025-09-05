@@ -93,12 +93,13 @@ export const approveMember = async (
   headers: { headers: { Authorization: string } }
 ) => {
   const response = await apiActions.patch(
-    `/api/v1/auth/member/${member_no}/approve/`,
-    {},
-    headers
+    `/api/v1/auth/approve-member/${member_no}/`,
+    {}, // No body for approval
+    headers // Pass the headers as config
   );
 
   return response.data;
+  // await apiActions.patch(`/api/v1/auth/approve-member/${member_no}/`, headers);
 };
 
 // TODO:
