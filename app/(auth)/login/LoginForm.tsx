@@ -17,6 +17,7 @@ interface CustomUser extends User {
   is_system_admin?: boolean;
   is_member?: boolean;
   is_staff?: boolean;
+  is_superuser?: boolean;
 }
 
 // Define the shape of the session, extending the default Session type
@@ -51,10 +52,12 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
     } else {
       toast?.success("Login successful! Redirecting...");
       if (session?.user?.is_system_admin === true) {
-        router.push("/admin/dashboard");
+        router.push("/sacco-admin/dashboard");
       } else if (session?.user?.is_member === true) {
         router.push("/member/dashboard");
-      } else if (session?.user?.is_staff === true) router.push("/superuser/dashboard"); else {
+      } else if (session?.user?.is_staff === true)
+        router.push("/superuser/dashboard");
+      else {
         router.push("/");
       }
     }
