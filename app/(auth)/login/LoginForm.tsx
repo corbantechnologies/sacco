@@ -83,7 +83,6 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
               <Input
                 id="member_no"
                 type="text"
-                placeholder="SACCO001"
                 value={member_no}
                 onChange={(e) => setMemberNo(e.target.value)}
                 required
