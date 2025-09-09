@@ -33,13 +33,13 @@ interface User {
     phone: string;
     salutation: string;
     tax_pin: string;
-  }
+}
   
-  interface UseFetchMemberResult {
+interface UseFetchMemberResult {
     data: User | undefined;
     isLoading: boolean;
     error: Error | null;
-  }
+}
 
 const InfoItem = ({ 
   icon: Icon, 
@@ -82,7 +82,7 @@ const SectionCard = ({
   </Card>
 );
 
-export const UserDetailsPage = () => {
+const UserDetailsPage = () => {
   const { data: user, isLoading, error }:UseFetchMemberResult  = useFetchMember();
 
   if (isLoading) {
