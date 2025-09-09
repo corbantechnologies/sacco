@@ -13,12 +13,14 @@ interface FormData {
   // Step 1: Personal Information
   first_name: string;
   last_name: string;
+  middle_name: string;
   email: string;
   phone: string;
   password:string;
   
   // Step 2: More Information
   dob: string;
+  member_no?:string;
   gender: string;
   id_type: string;
   id_number: string;
@@ -34,11 +36,13 @@ export default function MultiStepForm() {
   // useCreateAdminAccountMutation
   const [formData, setFormData] = useState<FormData>({
     first_name: '',
+    middle_name: '',
     last_name: '',
     email: '',
     phone: '',
     password: '',
     dob: '',
+    member_no:'',
     gender: '',
     id_type: '',
     id_number: '',
@@ -139,19 +143,25 @@ export default function MultiStepForm() {
                     id="firstName"
                     value={formData.first_name}
                     onChange={(e) => updateFormData('first_name', e.target.value)}
-                    placeholder="John"
                   />
                 </div>
+                <div className="space-y-2">
+                  <Label htmlFor="middleName">Middle Name *</Label>
+                  <Input
+                    id="middleName"
+                    value={formData.middle_name}
+                    onChange={(e) => updateFormData('middle_name', e.target.value)}
+                  />
+                </div>
+              </div>
                 <div className="space-y-2">
                   <Label htmlFor="lastName">Last Name *</Label>
                   <Input
                     id="lastName"
                     value={formData.last_name}
                     onChange={(e) => updateFormData('last_name', e.target.value)}
-                    placeholder="Doe"
                   />
                 </div>
-              </div>
               
               <div className="space-y-2">
                 <Label htmlFor="email">Email Address *</Label>
@@ -206,11 +216,23 @@ export default function MultiStepForm() {
                   className="w-full px-3 py-2 border border-input rounded-md bg-background"
                 >
                   <option value="">Select employment type</option>
-                  <option value="employed">Employed</option>
-                  <option value="self-employed">Self-employed</option>
-                  <option value="unemployed">Unemployed</option>
+                  <option value="Permanent">Permanent</option>
+                  <option value="Employed">Employed</option>
+                  <option value="Contract">Contract</option>
+                  <option value="Casual">Casual</option>
+                  <option value="Unemployed">Unemployed</option>
                 </select>
               </div>
+              {formData.employment_type !== 'Casual' && formData.employment_type !== 'Unemployed' && formData.employment_type !== '' && 
+              <div className="space-y-2">
+                <Label htmlFor="member_no">Payroll number *</Label>
+                <Input
+                  id="member_no"
+                  type='text'
+                  value={formData.member_no}
+                  onChange={(e) => updateFormData('member_no', e.target.value)}
+                />
+              </div>}
               <div className="space-y-2">
                 <Label htmlFor="gender">Gender *</Label>
                 <select
@@ -220,8 +242,8 @@ export default function MultiStepForm() {
                   className="w-full px-3 py-2 border border-input rounded-md bg-background"
                 >
                   <option value="">Select gender</option>
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
                 </select>
               </div>
               <div className="space-y-2">
@@ -233,12 +255,12 @@ export default function MultiStepForm() {
                   className="w-full px-3 py-2 border border-input rounded-md bg-background"
                 >
                   <option value="">Select salutation *</option>
-                  <option value="mr">Mr.</option>
-                  <option value="mrs">Mrs.</option>
-                  <option value="miss">Miss</option>
-                  <option value="dr">Dr.</option>
-                  <option value="prof">Prof.</option>
-                  <option value="hon">Hon.</option>
+                  <option value="Mr">Mr.</option>
+                  <option value="Mrs">Mrs.</option>
+                  <option value="Miss">Miss</option>
+                  <option value="Dr">Dr.</option>
+                  <option value="Prof">Prof.</option>
+                  <option value="Hon">Hon.</option>
                 </select>
               </div>
               <div className="space-y-2">
@@ -250,9 +272,9 @@ export default function MultiStepForm() {
                   className="w-full px-3 py-2 border border-input rounded-md bg-background"
                 >
                   <option value="">Select ID type</option>
-                  <option value="national_id">National Id</option>
-                  <option value="passport">Passport</option>
-                  <option value="driving_license">Driving License</option>
+                  <option value="National id">National Id</option>
+                  <option value="Passport">Passport</option>
+                  <option value="Driving license">Driving License</option>
                 </select>
               </div>
               

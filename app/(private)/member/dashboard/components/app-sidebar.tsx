@@ -4,7 +4,6 @@ import * as React from "react"
 import {
   LayoutGrid,
   Settings2,
-  Users,
 } from "lucide-react"
 
 import {
@@ -21,7 +20,6 @@ import Image from "next/image"
 import Logo from '@/public/sacco.png'
 import { useFetchMember } from "@/hooks/members/actions"
 
-// This is sample data.
 const data = {
   user: {
     name: "Tamarind",
@@ -30,41 +28,13 @@ const data = {
   },
   navMain: [
     {
-      title: "Members",
-      url: "#",
-      icon: Users,
-      isActive: false,
-      items: [
-        {
-          title: "All Members",
-          url: "/sacco-admin/dashboard/members",
-        },
-        {
-          title: "Invite Members",
-          url: "#",
-        },
-        {
-          title: "Join Requests",
-          url: "#",
-        },
-      ],
-    },
-    {
       title: "Settings",
       url: "#",
       icon: Settings2,
       items: [
         {
-          title: "Acocunt",
-          url: "/sacco-admin/dashboard/settings/account",
-        },
-        {
-          title: "Members",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
+          title: "Account",
+          url: "/member/dashboard/settings/account",
         },
       ],
     },
@@ -72,7 +42,7 @@ const data = {
   dashboard: [
     {
       name: "Dashboard",
-      url: "/sacco-admin/dashboard",
+      url: "/member/dashboard",
       icon: LayoutGrid,
     },
   ],
@@ -80,15 +50,15 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const {
-        data: member,
-      } = useFetchMember();
-      const userData = member ? {
-        name: member.first_name + ' ' + member.last_name,
-        email: member.email
-    } : {
-        name: "",
-        email: ""
-    }
+      data: member,
+    } = useFetchMember();
+    const userData = member ? {
+      name: member.first_name + ' ' + member.last_name,
+      email: member.email
+  } : {
+      name: "",
+      email: ""
+  }
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader className="bg-primary text-white">

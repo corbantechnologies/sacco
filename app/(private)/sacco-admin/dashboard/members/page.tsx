@@ -18,6 +18,7 @@ import { useFetchAllMembers, useVerifyMemberAccount } from "@/hooks/members/acti
 import { Loader2, MoreVertical } from 'lucide-react';
 import toast from 'react-hot-toast';
 import LoadingSpinner from '@/components/custom/LoadingSpinner';
+import { useRouter } from 'next/navigation';
 
 function SaccoMembers() {
   const {
@@ -25,6 +26,7 @@ function SaccoMembers() {
     data: members,
   } = useFetchAllMembers();
   const { mutate, isPending:isApprovalPending } = useVerifyMemberAccount();
+  const router = useRouter();
 
 const handleApprove = (memberNo:string) => {
   mutate(memberNo, {
@@ -43,8 +45,9 @@ const handleApprove = (memberNo:string) => {
     </div>;
   }
 
-  const onFileClick = (memberId: string) => {
-    console.log(memberId)
+  const onMemberClick = (memberNo: string) => {
+    console.log(memberNo)
+    router.push(`/sacco-admin/dashboard/members/${memberNo}`);
   }
 
   return(
@@ -56,7 +59,7 @@ const handleApprove = (memberNo:string) => {
           <TableRow>
             <TableHead className="w-12">
             </TableHead>
-            <TableHead>Member no.</TableHead>
+            <TableHead>Payroll no.</TableHead>
             <TableHead>Salutation</TableHead>
             <TableHead>Name</TableHead>
             <TableHead>Email</TableHead>
@@ -72,7 +75,7 @@ const handleApprove = (memberNo:string) => {
             <TableRow
               key={member.id}
               className="hover:bg-slate-50 cursor-pointer"
-              onClick={() => onFileClick(member.id)}
+              onClick={() => onMemberClick(member.member_no)}
             >
               <TableCell onClick={(e) => e.stopPropagation()}>
               </TableCell>

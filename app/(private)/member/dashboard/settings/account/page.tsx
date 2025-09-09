@@ -1,7 +1,4 @@
-"use client";
-
-import { useFetchMemberByMemberNumber } from "@/hooks/members/actions";
-import { useParams } from "next/navigation";
+'use client';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -17,6 +14,7 @@ import {
   Building,
   UserCheck
 } from "lucide-react";
+import { useFetchMember } from "@/hooks/members/actions";
 
 interface User {
     avatar?: string;
@@ -84,14 +82,8 @@ const SectionCard = ({
   </Card>
 );
 
-const MemberDetail = () => {
-  const { member_no } = useParams();
-
-  const {
-    isLoading,
-    data: user,
-    error
-  }:UseFetchMemberResult = useFetchMemberByMemberNumber(member_no as string);
+const UserDetailsPage = () => {
+  const { data: user, isLoading, error }:UseFetchMemberResult  = useFetchMember();
 
   if (isLoading) {
     return (
@@ -306,4 +298,4 @@ const MemberDetail = () => {
   );
 };
 
-export default MemberDetail;
+export default UserDetailsPage;
