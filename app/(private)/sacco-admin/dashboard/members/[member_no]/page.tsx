@@ -84,7 +84,7 @@ const SectionCard = ({
   </Card>
 );
 
-export const MemberDetail = () => {
+const MemberDetail = () => {
   const { member_no } = useParams();
 
   const {
