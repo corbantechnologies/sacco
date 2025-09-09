@@ -82,7 +82,7 @@ const SectionCard = ({
   </Card>
 );
 
-export const UserDetailsPage = () => {
+const UserDetailsPage = () => {
   const { data: user, isLoading, error }:UseFetchMemberResult  = useFetchMember();
 
   if (isLoading) {
