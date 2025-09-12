@@ -51,12 +51,13 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
       toast?.error("Invalid member number or password");
     } else {
       toast?.success("Login successful! Redirecting...");
-      if (session?.user?.is_system_admin === true) {
+      if (session?.user?.is_staff === true) {
+        // TODO: Temporarily redirecting all staff to sacco admin dashboard
         router.push("/sacco-admin/dashboard");
-      } else if (session?.user?.is_member === true) {
+      } else if (session?.user?.is_system_admin === true) {
+        router.push("/sacco-admin/dashboard");
+      } else if (session?.user?.is_member === true)
         router.push("/member/dashboard");
-      } else if (session?.user?.is_staff === true)
-        router.push("/superuser/dashboard");
       else {
         router.push("/");
       }
